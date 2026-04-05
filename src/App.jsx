@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { debts } from './data/debts';
-import { getStatus } from './utils/debtUtils';
+import { getStatus, calculateFine, parseDateStr } from './utils/debtUtils';
 import DebtCard from './components/DebtCard';
 import Summary from './components/Summary';
 import './App.css';
@@ -8,6 +8,7 @@ import './App.css';
 function App() {
   const [filter, setFilter] = useState('semua');
   const [search, setSearch] = useState('');
+  const [sort, setSort] = useState('default');
 
   const normalise = str => str.toLowerCase().replace(/\s+/g, '');
 
@@ -21,6 +22,23 @@ function App() {
     })();
     const matchesName = search === '' || normalise(d.nama).includes(normalise(search));
     return matchesStatus && matchesName;
+  });
+
+  const sortedDebts = sort === 'default' ? filteredDebts : [...filteredDebts].sort((a, b) => {
+    if (sort === 'tempo-asc' || sort === 'tempo-desc') {
+      const da = parseDateStr(a.tempo)?.getTime() ?? Infinity;
+      const db = parseDateStr(b.tempo)?.getTime() ?? Infinity;
+      return sort === 'tempo-asc' ? da - db : db - da;
+    }
+    if (sort === 'nominal-desc' || sort === 'nominal-asc') {
+      const ta = a.jumlah + calculateFine(a.jumlah, a.denda, a.tempo);
+      const tb = b.jumlah + calculateFine(b.jumlah, b.denda, b.tempo);
+      return sort === 'nominal-desc' ? tb - ta : ta - tb;
+    }
+    if (sort === 'nama-asc') {
+      return a.nama.localeCompare(b.nama, 'id');
+    }
+    return 0;
   });
 
   const overdueCount = debts.filter(d => getStatus(d) === 'terlambat').length;
@@ -62,13 +80,30 @@ function App() {
           ))}
         </div>
 
-        {filteredDebts.length === 0 ? (
+        <div className="sortBar">
+          <span className="sortLabel">⇅ Urutkan:</span>
+          <select
+            className="sortSelect"
+            value={sort}
+            onChange={e => setSort(e.target.value)}
+            aria-label="Urutan tampilan"
+          >
+            <option value="default">Default (urutan input)</option>
+            <option value="tempo-asc">Jatuh Tempo Terdekat</option>
+            <option value="tempo-desc">Jatuh Tempo Terjauh</option>
+            <option value="nominal-desc">Nominal Terbesar</option>
+            <option value="nominal-asc">Nominal Terkecil</option>
+            <option value="nama-asc">Nama A–Z</option>
+          </select>
+        </div>
+
+        {sortedDebts.length === 0 ? (
           <div className="emptyState">
             <p>{search ? `Tidak ada hasil untuk "${search}".` : 'Tidak ada data untuk filter ini.'}</p>
           </div>
         ) : (
           <div className="debtList">
-            {filteredDebts.map(debt => (
+            {sortedDebts.map(debt => (
               <DebtCard
                 key={debt.id}
                 debt={debt}

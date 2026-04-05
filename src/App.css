@@ -165,100 +165,37 @@
   font-size: 14px;
 }
 
-
-.appHeader {
-  background: var(--white);
-  border-bottom: 1px solid var(--gray-200);
-  position: sticky;
-  top: 0;
-  z-index: 50;
-  box-shadow: var(--shadow-sm);
-}
-
-.headerContent {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 14px 16px;
+/* ── Sort bar ───────────────────────────────────────── */
+.sortBar {
   display: flex;
   align-items: center;
-  justify-content: center;
-}
-
-.appTitle {
-  margin: 0;
-  font-size: 18px;
-  font-weight: 800;
-  color: var(--gray-900);
-  letter-spacing: -0.3px;
-}
-
-.appMain {
-  flex: 1;
-  max-width: 600px;
-  width: 100%;
-  margin: 0 auto;
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-
-.filterBar {
-  display: flex;
   gap: 8px;
-  overflow-x: auto;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  padding-bottom: 2px;
 }
 
-.filterBar::-webkit-scrollbar {
-  display: none;
-}
-
-.filterBtn {
-  flex-shrink: 0;
-  padding: 7px 14px;
-  border-radius: 999px;
-  border: 1.5px solid var(--gray-300);
-  background: var(--white);
+.sortLabel {
   font-size: 13px;
   font-weight: 600;
   color: var(--gray-600);
-  cursor: pointer;
-  transition: all 0.15s;
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
-.filterBtn:hover {
+.sortSelect {
+  flex: 1;
+  height: 36px;
+  border: 1.5px solid var(--gray-300);
+  border-radius: var(--radius);
+  background: var(--white);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--gray-800);
+  padding: 0 10px;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.sortSelect:focus {
   border-color: var(--primary);
-  color: var(--primary);
-}
-
-.filterBtnActive {
-  background: var(--primary);
-  border-color: var(--primary);
-  color: white;
-}
-
-.filterBtnActive:hover {
-  color: white;
-}
-
-.filterBtnOverdue:not(.filterBtnActive) {
-  border-color: var(--danger);
-  color: var(--danger);
-}
-
-.debtList {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.emptyState {
-  text-align: center;
-  padding: 40px 16px;
-  color: var(--gray-400);
-  font-size: 14px;
 }
