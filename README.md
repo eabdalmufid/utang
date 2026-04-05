@@ -1,86 +1,64 @@
 # 💰 Catatan Utang
 
-Website sederhana untuk mencatat utang, dibangun dengan **React + Vite**. Tidak membutuhkan backend — semua data disimpan di `localStorage` browser.
+Website sederhana untuk pengutang melihat tagihan mereka. Dibangun dengan **React + Vite**, tanpa backend. Data diatur langsung dari satu file JS.
 
-## Fitur
+## Screenshot Mobile
 
-- ✅ Tambah, edit, hapus data utang
-- ✅ Field: Nama, Jumlah (format rupiah), Tanggal Tempo, Denda (% per bulan)
-- ✅ Hitung denda otomatis (10% per bulan sejak jatuh tempo)
-- ✅ Tampilkan total utang + denda
-- ✅ Status: **Lunas**, **Belum Jatuh Tempo**, **Terlambat** (highlight merah)
-- ✅ Filter berdasarkan status
-- ✅ Mobile-first UI
-- ✅ Data tersimpan otomatis di `localStorage`
+![Mobile Screenshot](public/mobile-screenshot.png)
 
-## Cara Jalankan Secara Lokal
+## Cara Edit Data
 
-```bash
-# Install dependencies
-npm install
+Buka file **`src/data/debts.js`** dan ubah langsung:
 
-# Jalankan dev server
-npm run dev
-```
-
-Buka [http://localhost:5173/utang/](http://localhost:5173/utang/)
-
-## Deploy ke GitHub Pages
-
-### Prasyarat
-- Repo sudah ada di GitHub
-- GitHub Pages diaktifkan dari branch `gh-pages`
-
-### Langkah Deploy
-
-**1. Pastikan `vite.config.js` sudah benar:**
 ```js
-base: '/utang/',  // ganti 'utang' dengan nama repo Anda jika berbeda
+export const debts = [
+  {
+    id: '1',
+    nama: 'Nama Pengutang',
+    jumlah: 16817896,       // dalam rupiah, tanpa titik
+    tempo: '30/09/2026',    // format DD/MM/YYYY
+    denda: 10,              // % per bulan
+    lunas: false,           // true jika sudah lunas
+  },
+  // tambah item baru di sini...
+];
 ```
 
-**2. Build dan deploy:**
+Setelah simpan dan push ke branch `main`, website **otomatis ter-deploy** ke GitHub Pages via GitHub Actions.
+
+## Auto-Deploy (GitHub Actions)
+
+Setiap `git push` ke branch `main` akan:
+1. Build proyek dengan `npm run build`
+2. Deploy hasil build ke branch `gh-pages` secara otomatis
+
+Workflow ada di `.github/workflows/deploy.yml`.
+
+## Setup Awal GitHub Pages
+
+1. Push ke branch `main`
+2. Tunggu Actions selesai (cek tab **Actions** di repo)
+3. Buka **Settings → Pages** → Source: `gh-pages` branch, folder `/ (root)` → Save
+4. Website live di: `https://<username>.github.io/utang/`
+
+## Jalankan Lokal
+
 ```bash
-npm run deploy
-```
-
-Perintah ini akan:
-1. Build proyek ke folder `dist/`
-2. Push folder `dist/` ke branch `gh-pages` secara otomatis
-
-**3. Aktifkan GitHub Pages:**
-- Buka Settings → Pages di repo GitHub
-- Source: Deploy from branch → pilih branch `gh-pages`, folder `/ (root)`
-- Klik Save
-
-**4. Akses website:**
-```
-https://<username>.github.io/utang/
-```
-
-### Deploy Ulang
-Cukup jalankan lagi:
-```bash
-npm run deploy
+npm install
+npm run dev
 ```
 
 ## Struktur File
 
 ```
 src/
+├── data/
+│   └── debts.js          ← EDIT FILE INI untuk ubah data
 ├── components/
-│   ├── DebtCard.jsx          # Kartu tampilan satu utang
-│   ├── DebtCard.module.css
-│   ├── DebtModal.jsx         # Form tambah/edit utang
-│   ├── DebtModal.module.css
-│   ├── ConfirmDialog.jsx     # Dialog konfirmasi hapus
-│   ├── ConfirmDialog.module.css
-│   ├── Summary.jsx           # Ringkasan total tagihan
-│   └── Summary.module.css
+│   ├── DebtCard.jsx       — Kartu tampilan satu tagihan
+│   ├── Summary.jsx        — Ringkasan total tagihan
+│   └── ...
 ├── utils/
-│   ├── debtUtils.js          # Kalkulasi denda, format, status
-│   └── storage.js            # localStorage + data awal
-├── App.jsx
-├── App.css
-├── index.css
-└── main.jsx
+│   └── debtUtils.js       — Kalkulasi denda, format, status
+└── App.jsx
 ```
