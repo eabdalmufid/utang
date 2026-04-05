@@ -4,7 +4,7 @@ Website sederhana untuk pengutang melihat tagihan mereka. Dibangun dengan **Reac
 
 ## Screenshot Mobile
 
-![Mobile Screenshot](public/mobile-screenshot.png)
+![Mobile Screenshot](https://raw.githubusercontent.com/eabdalmufid/utang/copilot/create-debt-tracking-website/public/mobile-screenshot.png)
 
 ## Cara Edit Data
 
