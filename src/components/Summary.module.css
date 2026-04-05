@@ -1,0 +1,73 @@
+.summary {
+  background: var(--primary);
+  border-radius: var(--radius);
+  padding: 16px;
+  color: white;
+}
+
+.mainTotal {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-bottom: 14px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.mainLabel {
+  font-size: 12px;
+  font-weight: 500;
+  opacity: 0.85;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.mainValue {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  line-height: 1.1;
+}
+
+.breakdown {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
+  align-items: center;
+  gap: 0;
+}
+
+.divider {
+  width: 1px;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.2);
+  margin: 0 10px;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.itemLabel {
+  font-size: 11px;
+  opacity: 0.75;
+  font-weight: 500;
+}
+
+.itemValue {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.fineColor {
+  color: #fca5a5;
+}
+
+.overdueColor {
+  color: #fca5a5;
+}
+
+.lunasColor {
+  color: #6ee7b7;
+}
