@@ -3,6 +3,7 @@ import { debts } from './data/debts';
 import { getStatus, calculateFine, parseDateStr } from './utils/debtUtils';
 import DebtCard from './components/DebtCard';
 import Summary from './components/Summary';
+import Ticker from './components/Ticker';
 import './App.css';
 
 function App() {
@@ -49,6 +50,7 @@ function App() {
         <div className="headerContent">
           <h1 className="appTitle">💰 Catatan Utang</h1>
         </div>
+        <Ticker debts={debts} />
       </header>
 
       <main className="appMain">
