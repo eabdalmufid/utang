@@ -1,56 +1,12 @@
-import { useState, useCallback } from 'react';
-import { loadDebts, saveDebts, generateId } from './utils/storage';
+import { useState } from 'react';
+import { debts } from './data/debts';
 import { getStatus } from './utils/debtUtils';
 import DebtCard from './components/DebtCard';
-import DebtModal from './components/DebtModal';
-import ConfirmDialog from './components/ConfirmDialog';
 import Summary from './components/Summary';
 import './App.css';
 
 function App() {
-  const [debts, setDebts] = useState(() => loadDebts());
-  const [modalOpen, setModalOpen] = useState(false);
-  const [editingDebt, setEditingDebt] = useState(null);
-  const [confirmId, setConfirmId] = useState(null);
   const [filter, setFilter] = useState('semua');
-
-  const persist = useCallback((newDebts) => {
-    setDebts(newDebts);
-    saveDebts(newDebts);
-  }, []);
-
-  function handleAdd() {
-    setEditingDebt(null);
-    setModalOpen(true);
-  }
-
-  function handleEdit(debt) {
-    setEditingDebt(debt);
-    setModalOpen(true);
-  }
-
-  function handleSave(data) {
-    if (editingDebt) {
-      persist(debts.map(d => d.id === editingDebt.id ? { ...editingDebt, ...data } : d));
-    } else {
-      persist([...debts, { id: generateId(), ...data }]);
-    }
-    setModalOpen(false);
-    setEditingDebt(null);
-  }
-
-  function handleDeleteRequest(id) {
-    setConfirmId(id);
-  }
-
-  function handleDeleteConfirm() {
-    persist(debts.filter(d => d.id !== confirmId));
-    setConfirmId(null);
-  }
-
-  function handleToggleLunas(id) {
-    persist(debts.map(d => d.id === id ? { ...d, lunas: !d.lunas } : d));
-  }
 
   const filteredDebts = debts.filter(d => {
     if (filter === 'semua') return true;
@@ -67,9 +23,6 @@ function App() {
       <header className="appHeader">
         <div className="headerContent">
           <h1 className="appTitle">💰 Catatan Utang</h1>
-          <button className="btnAdd" onClick={handleAdd} aria-label="Tambah utang">
-            + Tambah
-          </button>
         </div>
       </header>
 
@@ -98,29 +51,11 @@ function App() {
               <DebtCard
                 key={debt.id}
                 debt={debt}
-                onEdit={handleEdit}
-                onDelete={handleDeleteRequest}
-                onToggleLunas={handleToggleLunas}
               />
             ))}
           </div>
         )}
       </main>
-
-      <DebtModal
-        key={editingDebt ? editingDebt.id : 'new'}
-        isOpen={modalOpen}
-        debt={editingDebt}
-        onClose={() => { setModalOpen(false); setEditingDebt(null); }}
-        onSave={handleSave}
-      />
-
-      <ConfirmDialog
-        isOpen={!!confirmId}
-        message="Yakin ingin menghapus data utang ini?"
-        onConfirm={handleDeleteConfirm}
-        onCancel={() => setConfirmId(null)}
-      />
     </div>
   );
 }

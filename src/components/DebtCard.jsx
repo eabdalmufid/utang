@@ -7,7 +7,7 @@ const STATUS_CONFIG = {
   terlambat: { label: 'Terlambat', className: styles.statusTerlambat },
 };
 
-export default function DebtCard({ debt, onEdit, onDelete, onToggleLunas }) {
+export default function DebtCard({ debt }) {
   const status = getStatus(debt);
   const fine = calculateFine(debt.jumlah, debt.denda, debt.tempo);
   const total = debt.jumlah + fine;
@@ -20,32 +20,6 @@ export default function DebtCard({ debt, onEdit, onDelete, onToggleLunas }) {
         <div className={styles.nameRow}>
           <span className={styles.name}>{debt.nama}</span>
           <span className={`${styles.statusBadge} ${cfg.className}`}>{cfg.label}</span>
-        </div>
-        <div className={styles.actions}>
-          <button
-            className={styles.btnIcon}
-            onClick={() => onToggleLunas(debt.id)}
-            title={debt.lunas ? 'Tandai Belum Lunas' : 'Tandai Lunas'}
-            aria-label={debt.lunas ? 'Tandai Belum Lunas' : 'Tandai Lunas'}
-          >
-            {debt.lunas ? '↩' : '✓'}
-          </button>
-          <button
-            className={styles.btnIcon}
-            onClick={() => onEdit(debt)}
-            title="Edit"
-            aria-label="Edit"
-          >
-            ✏️
-          </button>
-          <button
-            className={`${styles.btnIcon} ${styles.btnDelete}`}
-            onClick={() => onDelete(debt.id)}
-            title="Hapus"
-            aria-label="Hapus"
-          >
-            🗑️
-          </button>
         </div>
       </div>
 
