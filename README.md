@@ -2,9 +2,9 @@
 
 Website sederhana untuk pengutang melihat tagihan mereka. Dibangun dengan **React + Vite**, tanpa backend. Data diatur langsung dari satu file JS.
 
-## Screenshot Mobile
+## Screenshot
 
-![Mobile Screenshot](https://raw.githubusercontent.com/eabdalmufid/utang/copilot/create-debt-tracking-website/public/mobile-screenshot.png)
+![Screenshot](https://raw.githubusercontent.com/eabdalmufid/utang/copilot/create-debt-tracking-website/public/screenshot.png)
 
 ## Cara Edit Data
 
