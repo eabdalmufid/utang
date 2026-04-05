@@ -1,0 +1,97 @@
+.ticker {
+  display: flex;
+  align-items: stretch;
+  background: var(--primary);
+  color: #fff;
+  height: 34px;
+  overflow: hidden;
+  font-size: 12px;
+  line-height: 1;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+/* "🔥 TOP 3" badge */
+.label {
+  flex-shrink: 0;
+  background: var(--primary-dark);
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.6px;
+  white-space: nowrap;
+  text-transform: uppercase;
+}
+
+/* scrolling track */
+.track {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  /* mask left/right edges for a cleaner look */
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
+}
+
+/* inner content — duplicated so the loop is seamless */
+.content {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  animation: marquee 22s linear infinite;
+  /* pause when user prefers reduced motion */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .content {
+    animation: none;
+  }
+}
+
+/* scroll from 0 → -50% so the duplicate takes over */
+@keyframes marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* one debt entry */
+.item {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0 12px;
+}
+
+.rank {
+  font-size: 9px;
+  font-weight: 800;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  padding: 1px 4px;
+  letter-spacing: 0.3px;
+}
+
+.name {
+  font-weight: 600;
+  font-size: 12px;
+  opacity: 0.95;
+}
+
+.sep {
+  opacity: 0.5;
+  font-size: 11px;
+}
+
+.amount {
+  font-weight: 700;
+  font-size: 12px;
+  opacity: 1;
+}
+
+.dot {
+  font-size: 8px;
+  opacity: 0.35;
+  margin-left: 4px;
+}
