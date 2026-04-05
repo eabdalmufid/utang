@@ -58,7 +58,9 @@ export function inputValueToDate(str) {
 }
 
 /**
- * Calculate how many full months have passed since dueDate (from today)
+ * Calculate overdue periods since dueDate.
+ * Denda starts on the day AFTER the due date (H+1) and increments every month.
+ * e.g. due 17 Apr → 18 Apr = 1, 18 May = 2, 18 Jun = 3, …
  * Returns 0 if not overdue.
  */
 export function monthsOverdue(dueDateStr, today = new Date()) {
@@ -67,10 +69,11 @@ export function monthsOverdue(dueDateStr, today = new Date()) {
   // Normalize today to midnight
   const now = new Date(today.getFullYear(), today.getMonth(), today.getDate());
   if (now <= due) return 0;
-  let months = (now.getFullYear() - due.getFullYear()) * 12 + (now.getMonth() - due.getMonth());
-  // If day of month hasn't been reached yet, subtract one month
-  if (now.getDate() < due.getDate()) months -= 1;
-  return Math.max(0, months);
+  // First overdue date is due + 1 day; count full months from there and add 1
+  const firstOverdue = new Date(due.getFullYear(), due.getMonth(), due.getDate() + 1);
+  let months = (now.getFullYear() - firstOverdue.getFullYear()) * 12 + (now.getMonth() - firstOverdue.getMonth());
+  if (now.getDate() < firstOverdue.getDate()) months -= 1;
+  return Math.max(1, months + 1);
 }
 
 /**
