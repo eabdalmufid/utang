@@ -7,13 +7,20 @@ import './App.css';
 
 function App() {
   const [filter, setFilter] = useState('semua');
+  const [search, setSearch] = useState('');
+
+  const normalise = str => str.toLowerCase().replace(/\s+/g, '');
 
   const filteredDebts = debts.filter(d => {
-    if (filter === 'semua') return true;
-    if (filter === 'lunas') return d.lunas;
-    if (filter === 'terlambat') return getStatus(d) === 'terlambat';
-    if (filter === 'belum') return getStatus(d) === 'belum';
-    return true;
+    const matchesStatus = (() => {
+      if (filter === 'semua') return true;
+      if (filter === 'lunas') return d.lunas;
+      if (filter === 'terlambat') return getStatus(d) === 'terlambat';
+      if (filter === 'belum') return getStatus(d) === 'belum';
+      return true;
+    })();
+    const matchesName = search === '' || normalise(d.nama).includes(normalise(search));
+    return matchesStatus && matchesName;
   });
 
   const overdueCount = debts.filter(d => getStatus(d) === 'terlambat').length;
@@ -29,6 +36,20 @@ function App() {
       <main className="appMain">
         <Summary debts={debts} />
 
+        <div className="searchBar">
+          <span className="searchIcon">🔍</span>
+          <input
+            className="searchInput"
+            type="search"
+            placeholder="Cari nama pengutang…"
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+          />
+          {search && (
+            <button className="searchClear" onClick={() => setSearch('')} aria-label="Hapus">✕</button>
+          )}
+        </div>
+
         <div className="filterBar">
           {['semua', 'terlambat', 'belum', 'lunas'].map(f => (
             <button
@@ -43,7 +64,7 @@ function App() {
 
         {filteredDebts.length === 0 ? (
           <div className="emptyState">
-            <p>Tidak ada data untuk filter ini.</p>
+            <p>{search ? `Tidak ada hasil untuk "${search}".` : 'Tidak ada data untuk filter ini.'}</p>
           </div>
         ) : (
           <div className="debtList">

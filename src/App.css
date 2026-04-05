@@ -17,6 +17,168 @@
   max-width: 600px;
   margin: 0 auto;
   padding: 14px 16px;
+  padding-top: calc(14px + env(safe-area-inset-top));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.appTitle {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--gray-900);
+  letter-spacing: -0.3px;
+}
+
+.appMain {
+  flex: 1;
+  max-width: 600px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 16px;
+  padding-bottom: calc(16px + env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* ── Search bar ─────────────────────────────────────── */
+.searchBar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--white);
+  border: 1.5px solid var(--gray-200);
+  border-radius: var(--radius);
+  padding: 0 12px;
+  height: 44px;
+  transition: border-color 0.15s;
+}
+
+.searchBar:focus-within {
+  border-color: var(--primary);
+}
+
+.searchIcon {
+  font-size: 15px;
+  flex-shrink: 0;
+  color: var(--gray-400);
+  pointer-events: none;
+}
+
+.searchInput {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 14px;
+  color: var(--gray-800);
+  min-width: 0;
+}
+
+.searchInput::placeholder {
+  color: var(--gray-400);
+}
+
+/* hide browser's default × in search input */
+.searchInput::-webkit-search-cancel-button { display: none; }
+
+.searchClear {
+  flex-shrink: 0;
+  background: var(--gray-200);
+  border: none;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  font-size: 10px;
+  color: var(--gray-600);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  line-height: 1;
+}
+
+/* ── Filter bar ─────────────────────────────────────── */
+.filterBar {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding-bottom: 2px;
+}
+
+.filterBar::-webkit-scrollbar {
+  display: none;
+}
+
+.filterBtn {
+  flex-shrink: 0;
+  padding: 9px 16px;
+  border-radius: 999px;
+  border: 1.5px solid var(--gray-300);
+  background: var(--white);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gray-600);
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+  /* larger touch target */
+  min-height: 38px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.filterBtn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.filterBtnActive {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: white;
+}
+
+.filterBtnActive:hover {
+  color: white;
+}
+
+.filterBtnOverdue:not(.filterBtnActive) {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+.debtList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 40px 16px;
+  color: var(--gray-400);
+  font-size: 14px;
+}
+
+
+.appHeader {
+  background: var(--white);
+  border-bottom: 1px solid var(--gray-200);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  box-shadow: var(--shadow-sm);
+}
+
+.headerContent {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 14px 16px;
   display: flex;
   align-items: center;
   justify-content: center;
