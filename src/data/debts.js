@@ -52,4 +52,12 @@ export const debts = [
     denda: 10,
     lunas: false,
   },
+  {
+    id: '6',
+    nama: 'A**F K****UL',
+    jumlah: 150000,
+    tempo: '07/04/2026',
+    denda: 0,
+    lunas: true,
+  },
 ];
