@@ -166,36 +166,3 @@
 }
 
 /* ── Sort bar ───────────────────────────────────────── */
-.sortBar {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.sortLabel {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--gray-600);
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-
-.sortSelect {
-  flex: 1;
-  height: 36px;
-  border: 1.5px solid var(--gray-300);
-  border-radius: var(--radius);
-  background: var(--white);
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--gray-800);
-  padding: 0 10px;
-  cursor: pointer;
-  outline: none;
-  transition: border-color 0.15s;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.sortSelect:focus {
-  border-color: var(--primary);
-}

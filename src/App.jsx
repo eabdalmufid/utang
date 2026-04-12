@@ -7,37 +7,37 @@ import Ticker from './components/Ticker';
 import './App.css';
 
 function App() {
-  const [filter, setFilter] = useState('semua');
   const [search, setSearch] = useState('');
-  const [sort, setSort] = useState('default');
+  const [sort, setSort] = useState('terlambat');
 
   const normalise = str => str.toLowerCase().replace(/\s+/g, '');
 
-  const filteredDebts = debts.filter(d => {
-    const matchesStatus = (() => {
-      if (filter === 'semua') return true;
-      if (filter === 'lunas') return d.lunas;
-      if (filter === 'terlambat') return getStatus(d) === 'terlambat';
-      if (filter === 'belum') return getStatus(d) === 'belum';
-      return true;
-    })();
-    const matchesName = search === '' || normalise(d.nama).includes(normalise(search));
-    return matchesStatus && matchesName;
-  });
+  const filteredDebts = debts.filter(d =>
+    search === '' || normalise(d.nama).includes(normalise(search))
+  );
 
-  const sortedDebts = sort === 'default' ? filteredDebts : [...filteredDebts].sort((a, b) => {
-    if (sort === 'tempo-asc' || sort === 'tempo-desc') {
+  const sortedDebts = [...filteredDebts].sort((a, b) => {
+    const aLunas = a.lunas ? 1 : 0;
+    const bLunas = b.lunas ? 1 : 0;
+    if (aLunas !== bLunas) return aLunas - bLunas;
+
+    if (sort === 'terlambat') {
+      const aOver = getStatus(a) === 'terlambat' ? 0 : 1;
+      const bOver = getStatus(b) === 'terlambat' ? 0 : 1;
+      if (aOver !== bOver) return aOver - bOver;
       const da = parseDateStr(a.tempo)?.getTime() ?? Infinity;
       const db = parseDateStr(b.tempo)?.getTime() ?? Infinity;
-      return sort === 'tempo-asc' ? da - db : db - da;
+      return da - db;
     }
-    if (sort === 'nominal-desc' || sort === 'nominal-asc') {
+    if (sort === 'terdekat') {
+      const da = parseDateStr(a.tempo)?.getTime() ?? Infinity;
+      const db = parseDateStr(b.tempo)?.getTime() ?? Infinity;
+      return da - db;
+    }
+    if (sort === 'terbesar') {
       const ta = a.jumlah + calculateFine(a.jumlah, a.denda, a.tempo);
       const tb = b.jumlah + calculateFine(b.jumlah, b.denda, b.tempo);
-      return sort === 'nominal-desc' ? tb - ta : ta - tb;
-    }
-    if (sort === 'nama-asc') {
-      return a.nama.localeCompare(b.nama, 'id');
+      return tb - ta;
     }
     return 0;
   });
@@ -71,32 +71,19 @@ function App() {
         </div>
 
         <div className="filterBar">
-          {['semua', 'terlambat', 'belum', 'lunas'].map(f => (
+          {[
+            { key: 'terlambat', label: `Terlambat${overdueCount > 0 ? ` (${overdueCount})` : ''}`, overdue: overdueCount > 0 },
+            { key: 'terdekat', label: 'Terdekat', overdue: false },
+            { key: 'terbesar', label: 'Terbesar', overdue: false },
+          ].map(({ key, label, overdue }) => (
             <button
-              key={f}
-              className={`filterBtn ${filter === f ? 'filterBtnActive' : ''} ${f === 'terlambat' && overdueCount > 0 ? 'filterBtnOverdue' : ''}`}
-              onClick={() => setFilter(f)}
+              key={key}
+              className={`filterBtn ${sort === key ? 'filterBtnActive' : ''} ${key === 'terlambat' && overdue && sort !== 'terlambat' ? 'filterBtnOverdue' : ''}`}
+              onClick={() => setSort(key)}
             >
-              {f === 'semua' ? 'Semua' : f === 'terlambat' ? `Terlambat${overdueCount > 0 ? ` (${overdueCount})` : ''}` : f === 'belum' ? 'Belum Tempo' : 'Lunas'}
+              {label}
             </button>
           ))}
-        </div>
-
-        <div className="sortBar">
-          <span className="sortLabel">⇅ Urutkan:</span>
-          <select
-            className="sortSelect"
-            value={sort}
-            onChange={e => setSort(e.target.value)}
-            aria-label="Urutan tampilan"
-          >
-            <option value="default">Default (urutan input)</option>
-            <option value="tempo-asc">Jatuh Tempo Terdekat</option>
-            <option value="tempo-desc">Jatuh Tempo Terjauh</option>
-            <option value="nominal-desc">Nominal Terbesar</option>
-            <option value="nominal-asc">Nominal Terkecil</option>
-            <option value="nama-asc">Nama A–Z</option>
-          </select>
         </div>
 
         {sortedDebts.length === 0 ? (
