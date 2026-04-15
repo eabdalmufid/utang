@@ -1,0 +1,33 @@
+name: Initialize Data Branch
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  init:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Create data branch if not exists
+        run: |
+          if git ls-remote --exit-code --heads origin data; then
+            echo "Branch 'data' already exists. No action needed."
+          else
+            cp src/data/debts.json /tmp/debts.json
+            git checkout --orphan data
+            git rm -rf .
+            cp /tmp/debts.json debts.json
+            git add debts.json
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git commit -m "init: initialize data branch with debts.json"
+            git push origin data
+            echo "Branch 'data' created successfully."
+          fi
