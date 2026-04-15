@@ -1,45 +1,34 @@
 # 💰 Catatan Utang
 
-Website sederhana untuk pengutang melihat tagihan mereka. Dibangun dengan **React + Vite**, tanpa backend. Data diatur langsung dari satu file JS.
+Website sederhana untuk mencatat utang, dibangun dengan **React + Vite** tanpa backend.
 
 ## Screenshot
 
 ![Screenshot](public/screenshot.png)
 
-## Cara Edit Data
+## Cara Edit Data (Branch `data`)
 
-Buka file **`src/data/debts.js`** dan ubah langsung:
+Data utang sekarang dikelola dari branch **`data`** di file root **`debts.json`**.
 
-```js
-export const debts = [
-  {
-    id: '1',
-    nama: 'Nama Pengutang',
-    jumlah: 16817896,       // dalam rupiah, tanpa titik
-    tempo: '30/09/2026',    // format DD/MM/YYYY
-    denda: 10,              // % per bulan
-    lunas: false,           // true jika sudah lunas
-  },
-  // tambah item baru di sini...
-];
+Format item:
+
+```json
+{
+  "id": "1",
+  "nama": "Nama Pengutang",
+  "jumlah": 1000000,
+  "tempo": "30/09/2026",
+  "denda": 10,
+  "lunas": false
+}
 ```
 
-Setelah simpan dan push ke branch `main`, website **otomatis ter-deploy** ke GitHub Pages via GitHub Actions.
+Setelah update `debts.json` di branch `data` dan push, workflow akan build lalu deploy otomatis.
 
 ## Auto-Deploy (GitHub Actions)
 
-Setiap `git push` ke branch `main` akan:
-1. Build proyek dengan `npm run build`
-2. Deploy hasil build ke branch `gh-pages` secara otomatis
-
-Workflow ada di `.github/workflows/deploy.yml`.
-
-## Setup Awal GitHub Pages
-
-1. Push ke branch `main`
-2. Tunggu Actions selesai (cek tab **Actions** di repo)
-3. Buka **Settings → Pages** → Source: `gh-pages` branch, folder `/ (root)` → Save
-4. Website live di: `https://<username>.github.io/utang/`
+- `.github/workflows/deploy.yml` → deploy saat ada push ke `main` (perubahan kode)
+- `.github/workflows/deploy-from-data.yml` → deploy saat ada push ke `data` (perubahan data)
 
 ## Jalankan Lokal
 
@@ -53,12 +42,9 @@ npm run dev
 ```
 src/
 ├── data/
-│   └── debts.js          ← EDIT FILE INI untuk ubah data
+│   ├── debts.js            ← loader data dari debts.json
+│   └── debts.json          ← fallback data lokal
 ├── components/
-│   ├── DebtCard.jsx       — Kartu tampilan satu tagihan
-│   ├── Summary.jsx        — Ringkasan total tagihan
-│   └── ...
 ├── utils/
-│   └── debtUtils.js       — Kalkulasi denda, format, status
 └── App.jsx
 ```
