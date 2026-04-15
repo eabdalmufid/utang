@@ -24,7 +24,10 @@ jobs:
           path: data-branch
 
       - name: Copy debts data
-        run: cp data-branch/debts.json src/data/debts.json
+        run: |
+          if [ -f data-branch/debts.json ]; then
+            cp data-branch/debts.json src/data/debts.json
+          fi
 
       - name: Setup Node
         uses: actions/setup-node@v4
