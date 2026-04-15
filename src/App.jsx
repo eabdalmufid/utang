@@ -28,31 +28,39 @@ function App() {
       );
       return [...unpaidDebts, ...paidDebts];
     })()
-    : [...filteredDebts].sort((a, b) => {
-      const aLunas = a.lunas ? 1 : 0;
-      const bLunas = b.lunas ? 1 : 0;
-      if (aLunas !== bLunas) return aLunas - bLunas;
+    : (() => {
+      const unpaidDebts = filteredDebts.filter(d => !d.lunas);
 
       if (sort === 'terlambat') {
-        const aOver = getStatus(a) === 'terlambat' ? 0 : 1;
-        const bOver = getStatus(b) === 'terlambat' ? 0 : 1;
-        if (aOver !== bOver) return aOver - bOver;
-        const da = parseDateStr(a.tempo)?.getTime() ?? Infinity;
-        const db = parseDateStr(b.tempo)?.getTime() ?? Infinity;
-        return da - db;
+        return unpaidDebts
+          .filter(d => getStatus(d) === 'terlambat')
+          .sort((a, b) => {
+            const da = parseDateStr(a.tempo)?.getTime() ?? -Infinity;
+            const db = parseDateStr(b.tempo)?.getTime() ?? -Infinity;
+            return db - da;
+          });
       }
+
       if (sort === 'terdekat') {
-        const da = parseDateStr(a.tempo)?.getTime() ?? Infinity;
-        const db = parseDateStr(b.tempo)?.getTime() ?? Infinity;
-        return da - db;
+        return unpaidDebts
+          .filter(d => getStatus(d) === 'belum')
+          .sort((a, b) => {
+            const da = parseDateStr(a.tempo)?.getTime() ?? Infinity;
+            const db = parseDateStr(b.tempo)?.getTime() ?? Infinity;
+            return da - db;
+          });
       }
+
       if (sort === 'terbesar') {
-        const ta = a.jumlah + calculateFine(a.jumlah, a.denda, a.tempo);
-        const tb = b.jumlah + calculateFine(b.jumlah, b.denda, b.tempo);
-        return tb - ta;
+        return unpaidDebts.sort((a, b) => {
+          const ta = a.jumlah + calculateFine(a.jumlah, a.denda, a.tempo);
+          const tb = b.jumlah + calculateFine(b.jumlah, b.denda, b.tempo);
+          return tb - ta;
+        });
       }
-      return 0;
-    });
+
+      return unpaidDebts;
+    })();
 
   const overdueCount = debts.filter(d => getStatus(d) === 'terlambat').length;
 
