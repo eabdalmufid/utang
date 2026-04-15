@@ -8,7 +8,7 @@ import './App.css';
 
 function App() {
   const [search, setSearch] = useState('');
-  const [sort, setSort] = useState('terlambat');
+  const [sort, setSort] = useState('semua');
 
   const normalise = str => str.toLowerCase().replace(/\s+/g, '');
 
@@ -16,31 +16,33 @@ function App() {
     search === '' || normalise(d.nama).includes(normalise(search))
   );
 
-  const sortedDebts = [...filteredDebts].sort((a, b) => {
-    const aLunas = a.lunas ? 1 : 0;
-    const bLunas = b.lunas ? 1 : 0;
-    if (aLunas !== bLunas) return aLunas - bLunas;
+  const sortedDebts = sort === 'semua'
+    ? filteredDebts
+    : [...filteredDebts].sort((a, b) => {
+      const aLunas = a.lunas ? 1 : 0;
+      const bLunas = b.lunas ? 1 : 0;
+      if (aLunas !== bLunas) return aLunas - bLunas;
 
-    if (sort === 'terlambat') {
-      const aOver = getStatus(a) === 'terlambat' ? 0 : 1;
-      const bOver = getStatus(b) === 'terlambat' ? 0 : 1;
-      if (aOver !== bOver) return aOver - bOver;
-      const da = parseDateStr(a.tempo)?.getTime() ?? Infinity;
-      const db = parseDateStr(b.tempo)?.getTime() ?? Infinity;
-      return da - db;
-    }
-    if (sort === 'terdekat') {
-      const da = parseDateStr(a.tempo)?.getTime() ?? Infinity;
-      const db = parseDateStr(b.tempo)?.getTime() ?? Infinity;
-      return da - db;
-    }
-    if (sort === 'terbesar') {
-      const ta = a.jumlah + calculateFine(a.jumlah, a.denda, a.tempo);
-      const tb = b.jumlah + calculateFine(b.jumlah, b.denda, b.tempo);
-      return tb - ta;
-    }
-    return 0;
-  });
+      if (sort === 'terlambat') {
+        const aOver = getStatus(a) === 'terlambat' ? 0 : 1;
+        const bOver = getStatus(b) === 'terlambat' ? 0 : 1;
+        if (aOver !== bOver) return aOver - bOver;
+        const da = parseDateStr(a.tempo)?.getTime() ?? Infinity;
+        const db = parseDateStr(b.tempo)?.getTime() ?? Infinity;
+        return da - db;
+      }
+      if (sort === 'terdekat') {
+        const da = parseDateStr(a.tempo)?.getTime() ?? Infinity;
+        const db = parseDateStr(b.tempo)?.getTime() ?? Infinity;
+        return da - db;
+      }
+      if (sort === 'terbesar') {
+        const ta = a.jumlah + calculateFine(a.jumlah, a.denda, a.tempo);
+        const tb = b.jumlah + calculateFine(b.jumlah, b.denda, b.tempo);
+        return tb - ta;
+      }
+      return 0;
+    });
 
   const overdueCount = debts.filter(d => getStatus(d) === 'terlambat').length;
 
@@ -72,6 +74,7 @@ function App() {
 
         <div className="filterBar">
           {[
+            { key: 'semua', label: 'Semua', overdue: false },
             { key: 'terlambat', label: `Terlambat${overdueCount > 0 ? ` (${overdueCount})` : ''}`, overdue: overdueCount > 0 },
             { key: 'terdekat', label: 'Terdekat', overdue: false },
             { key: 'terbesar', label: 'Terbesar', overdue: false },
@@ -106,4 +109,3 @@ function App() {
 }
 
 export default App;
-
