@@ -27,6 +27,7 @@ jobs:
         run: |
           if [ -f data-branch/debts.json ]; then
             cp data-branch/debts.json src/data/debts.json
+            cp data-branch/debts.json public/debts.json
           fi
 
       - name: Setup Node
