@@ -17,10 +17,17 @@ function App() {
   );
 
   const sortedDebts = sort === 'semua'
-    ? [
-      ...filteredDebts.filter(d => !d.lunas),
-      ...filteredDebts.filter(d => d.lunas),
-    ]
+    ? (() => {
+      const { unpaidDebts, paidDebts } = filteredDebts.reduce(
+        (acc, debt) => {
+          if (debt.lunas) acc.paidDebts.push(debt);
+          else acc.unpaidDebts.push(debt);
+          return acc;
+        },
+        { unpaidDebts: [], paidDebts: [] }
+      );
+      return [...unpaidDebts, ...paidDebts];
+    })()
     : [...filteredDebts].sort((a, b) => {
       const aLunas = a.lunas ? 1 : 0;
       const bLunas = b.lunas ? 1 : 0;
