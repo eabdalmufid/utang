@@ -17,7 +17,10 @@ function App() {
   );
 
   const sortedDebts = sort === 'semua'
-    ? filteredDebts
+    ? [
+      ...filteredDebts.filter(d => !d.lunas),
+      ...filteredDebts.filter(d => d.lunas),
+    ]
     : [...filteredDebts].sort((a, b) => {
       const aLunas = a.lunas ? 1 : 0;
       const bLunas = b.lunas ? 1 : 0;
