@@ -21,7 +21,7 @@
     "jumlah": 903667,
     "tempo": "17/05/2026",
     "denda": 10,
-    "lunas": false
+    "lunas": true
   },
   {
     "id": "4",
@@ -53,6 +53,6 @@
     "jumlah": 5000,
     "tempo": "22/03/2026",
     "denda": 0,
-    "lunas": false
+    "lunas": true
   }
 ]
