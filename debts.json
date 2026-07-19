@@ -2,7 +2,7 @@
   {
     "id": "1",
     "nama": "F**DA F******TI",
-    "jumlah": 12817896,
+    "jumlah": 11721560,
     "tempo": "30/09/2026",
     "denda": 10,
     "lunas": false
@@ -37,7 +37,7 @@
     "jumlah": 903664,
     "tempo": "17/07/2026",
     "denda": 10,
-    "lunas": false
+    "lunas": true
   },
   {
     "id": "6",
@@ -50,7 +50,7 @@
   {
     "id": "7",
     "nama": "F**LI F**IH",
-    "jumlah": 5000,
+    "jumlah": 50000,
     "tempo": "22/03/2026",
     "denda": 0,
     "lunas": true
