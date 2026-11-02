@@ -1,16 +1,37 @@
-# 💰 Catatan Utang
+# Catatan Utang
 
-Website sederhana untuk mencatat utang, dibangun dengan **React + Vite** tanpa backend.
+Aplikasi web sederhana untuk memantau utang aktif. Dibangun dengan **React** dan
+**Vite**, tanpa backend.
 
-## Screenshot
+![Preview aplikasi](public/screenshot.png)
 
-![Screenshot](public/screenshot.png)
+## Fitur
 
-## Cara Edit Data (Branch `data`)
+- Ringkasan total pokok, denda, dan jumlah tagihan terlambat
+- Pencarian berdasarkan nama pengutang
+- Pengurutan berdasarkan status, jatuh tempo, dan total tagihan
+- Perhitungan denda bulanan otomatis
+- Tampilan responsif untuk perangkat mobile
 
-Data utang sekarang dikelola dari branch **`data`** di file root **`debts.json`**.
+## Menjalankan secara lokal
 
-Format item:
+```bash
+npm install
+npm run dev
+```
+
+Perintah lain yang tersedia:
+
+```bash
+npm run lint    # Periksa kualitas kode
+npm run build   # Buat build production
+npm run preview # Jalankan preview dari hasil build
+```
+
+## Mengubah data
+
+Data produksi dikelola di branch `data`, pada file `debts.json` di root branch
+tersebut. Setiap item menggunakan format berikut:
 
 ```json
 {
@@ -23,28 +44,26 @@ Format item:
 }
 ```
 
-Setelah update `debts.json` di branch `data` dan push, workflow akan build lalu deploy otomatis.
+`jumlah` adalah angka dalam rupiah tanpa pemisah. `tempo` menggunakan format
+`DD/MM/YYYY`, sedangkan `denda` adalah persentase per bulan.
 
-## Auto-Deploy (GitHub Actions)
+Untuk pengembangan lokal, aplikasi membaca `src/data/debts.json`.
 
-- `.github/workflows/deploy.yml` → deploy saat ada push ke `main` (perubahan kode)
-- `.github/workflows/deploy-from-data.yml` → deploy saat ada push ke `data` (perubahan data)
+## Deployment
 
-## Jalankan Lokal
+Workflow `.github/workflows/deploy.yml` berjalan setiap ada push ke branch `main`.
+Sebelum build, workflow mengambil `debts.json` terbaru dari branch `data` dan
+menyalinnya ke `src/data/debts.json`, lalu menerbitkan hasil build ke GitHub Pages.
 
-```bash
-npm install
-npm run dev
-```
+Perubahan pada branch `data` saja tidak memicu deployment. Setelah memperbarui data,
+jalankan deployment melalui push ke `main`.
 
-## Struktur File
+## Struktur utama
 
-```
+```text
 src/
-├── data/
-│   ├── debts.js            ← loader data dari debts.json
-│   └── debts.json          ← fallback data lokal
-├── components/
-├── utils/
-└── App.jsx
+├── App.jsx
+├── components/     # Komponen antarmuka
+├── data/           # Loader dan data utang lokal
+└── utils/          # Format rupiah, tanggal, status, dan denda
 ```
