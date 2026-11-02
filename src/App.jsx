@@ -9,30 +9,19 @@ import './App.css';
 function App() {
   const [search, setSearch] = useState('');
   const [sort, setSort] = useState('semua');
+  const activeDebts = debts.filter(d => !d.lunas);
 
   const normalise = str => str.toLowerCase().replace(/\s+/g, '');
 
-  const filteredDebts = debts.filter(d =>
+  const filteredDebts = activeDebts.filter(d =>
     search === '' || normalise(d.nama).includes(normalise(search))
   );
 
   const sortedDebts = sort === 'semua'
-    ? (() => {
-      const { unpaidDebts, paidDebts } = filteredDebts.reduce(
-        (acc, debt) => {
-          if (debt.lunas) acc.paidDebts.push(debt);
-          else acc.unpaidDebts.push(debt);
-          return acc;
-        },
-        { unpaidDebts: [], paidDebts: [] }
-      );
-      return [...unpaidDebts, ...paidDebts];
-    })()
+    ? filteredDebts
     : (() => {
-      const unpaidDebts = filteredDebts.filter(d => !d.lunas);
-
       if (sort === 'terlambat') {
-        return unpaidDebts
+        return filteredDebts
           .filter(d => getStatus(d) === 'terlambat')
           .sort((a, b) => {
             const da = parseDateStr(a.tempo)?.getTime() ?? -Infinity;
@@ -42,7 +31,7 @@ function App() {
       }
 
       if (sort === 'terdekat') {
-        return unpaidDebts
+        return filteredDebts
           .filter(d => getStatus(d) === 'belum')
           .sort((a, b) => {
             const da = parseDateStr(a.tempo)?.getTime() ?? Infinity;
@@ -52,17 +41,17 @@ function App() {
       }
 
       if (sort === 'terbesar') {
-        return unpaidDebts.sort((a, b) => {
+        return filteredDebts.sort((a, b) => {
           const ta = a.jumlah + calculateFine(a.jumlah, a.denda, a.tempo);
           const tb = b.jumlah + calculateFine(b.jumlah, b.denda, b.tempo);
           return tb - ta;
         });
       }
 
-      return unpaidDebts;
+      return filteredDebts;
     })();
 
-  const overdueCount = debts.filter(d => getStatus(d) === 'terlambat').length;
+  const overdueCount = activeDebts.filter(d => getStatus(d) === 'terlambat').length;
 
   return (
     <div className="app">
@@ -70,11 +59,11 @@ function App() {
         <div className="headerContent">
           <h1 className="appTitle">💰 Catatan Utang</h1>
         </div>
-        <Ticker debts={debts} />
+        <Ticker debts={activeDebts} />
       </header>
 
       <main className="appMain">
-        <Summary debts={debts} />
+        <Summary debts={activeDebts} />
 
         <div className="searchBar">
           <span className="searchIcon">🔍</span>
