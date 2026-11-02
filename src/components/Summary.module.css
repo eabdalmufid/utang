@@ -1,7 +1,7 @@
 .summary {
   background: var(--primary);
   border-radius: var(--radius);
-  padding: 16px;
+  padding: 14px;
   color: white;
 }
 
@@ -27,36 +27,33 @@
   font-weight: 800;
   letter-spacing: -0.5px;
   line-height: 1.1;
+  overflow-wrap: anywhere;
 }
 
 .breakdown {
   display: grid;
-  grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
-  align-items: center;
-  gap: 0;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
 }
 
-@media (max-width: 340px) {
+@media (max-width: 520px) {
   .breakdown {
-    grid-template-columns: 1fr 1fr;
-    gap: 10px 8px;
-  }
-  .divider {
-    display: none;
+    grid-template-columns: 1fr;
+    gap: 8px;
   }
 }
 
 .divider {
-  width: 1px;
-  height: 32px;
-  background: rgba(255, 255, 255, 0.2);
-  margin: 0 10px;
+  display: none;
 }
 
 .item {
   display: flex;
   flex-direction: column;
   gap: 2px;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  padding: 8px 10px;
 }
 
 .itemLabel {
@@ -78,6 +75,8 @@
   color: #fca5a5;
 }
 
-.lunasColor {
-  color: #6ee7b7;
+@media (max-width: 400px) {
+  .mainValue {
+    font-size: 24px;
+  }
 }

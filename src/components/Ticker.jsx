@@ -16,21 +16,17 @@ export default function Ticker({ debts }) {
 
   if (top3.length === 0) return null;
 
-  // Duplicate items for seamless infinite loop
-  const items = [...top3, ...top3];
-
   return (
     <div className={styles.ticker} aria-label="Top 3 utang terbesar">
       <span className={styles.label}>🔥 TOP 3</span>
       <div className={styles.track}>
         <div className={styles.content}>
-          {items.map((d, i) => (
-            <span key={i} className={styles.item}>
-              <span className={styles.rank}>#{(i % top3.length) + 1}</span>
+          {top3.map((d, i) => (
+            <span key={d.id} className={styles.item}>
+              <span className={styles.rank}>#{i + 1}</span>
               <span className={styles.name}>{d.nama}</span>
               <span className={styles.sep}>—</span>
               <span className={styles.amount}>Rp {formatRupiah(d.total)}</span>
-              <span className={styles.dot} aria-hidden="true">⬥</span>
             </span>
           ))}
         </div>
