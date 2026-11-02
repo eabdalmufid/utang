@@ -36,11 +36,11 @@
   max-width: 600px;
   width: 100%;
   margin: 0 auto;
-  padding: 16px;
-  padding-bottom: calc(16px + env(safe-area-inset-bottom));
+  padding: 12px;
+  padding-bottom: calc(12px + env(safe-area-inset-bottom));
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 12px;
 }
 
 /* ── Search bar ─────────────────────────────────────── */
@@ -52,7 +52,7 @@
   border: 1.5px solid var(--gray-200);
   border-radius: var(--radius);
   padding: 0 12px;
-  height: 44px;
+  height: 46px;
   transition: border-color 0.15s;
 }
 
@@ -117,7 +117,7 @@
 
 .filterBtn {
   flex-shrink: 0;
-  padding: 9px 16px;
+  padding: 10px 14px;
   border-radius: 999px;
   border: 1.5px solid var(--gray-300);
   background: var(--white);
@@ -128,7 +128,7 @@
   transition: all 0.15s;
   white-space: nowrap;
   /* larger touch target */
-  min-height: 38px;
+  min-height: 40px;
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -155,7 +155,7 @@
 .debtList {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
 
 .emptyState {
@@ -163,6 +163,22 @@
   padding: 40px 16px;
   color: var(--gray-400);
   font-size: 14px;
+}
+
+@media (max-width: 420px) {
+  .headerContent {
+    padding-inline: 12px;
+  }
+
+  .appTitle {
+    font-size: 17px;
+  }
+
+  .appMain {
+    padding: 10px;
+    padding-bottom: calc(10px + env(safe-area-inset-bottom));
+    gap: 10px;
+  }
 }
 
 /* ── Sort bar ───────────────────────────────────────── */
