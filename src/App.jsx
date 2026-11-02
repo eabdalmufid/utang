@@ -57,12 +57,27 @@ function App() {
     <div className="app">
       <header className="appHeader">
         <div className="headerContent">
-          <h1 className="appTitle">💰 Catatan Utang</h1>
+          <div className="brandMark" aria-hidden="true">U</div>
+          <div className="brandCopy">
+            <span className="eyebrow">PERSONAL FINANCE</span>
+            <h1 className="appTitle">Catatan Utang</h1>
+          </div>
+          <div className="headerMeta">
+            <span className="statusDot" />
+            <span>Data tersimpan lokal</span>
+          </div>
         </div>
         <Ticker debts={activeDebts} />
       </header>
 
       <main className="appMain">
+        <div className="pageIntro">
+          <div>
+            <span className="sectionKicker">Ringkasan hari ini</span>
+            <h2>Jaga arus kas tetap jelas.</h2>
+          </div>
+          <span className="updatedLabel">Aktif · {activeDebts.length} catatan</span>
+        </div>
         <Summary debts={activeDebts} />
 
         <div className="searchBar">
@@ -98,7 +113,13 @@ function App() {
 
         {sortedDebts.length === 0 ? (
           <div className="emptyState">
-            <p>{search ? `Tidak ada hasil untuk "${search}".` : 'Tidak ada data untuk filter ini.'}</p>
+            <div className="emptyIcon" aria-hidden="true">
+              <span>✓</span>
+            </div>
+            <p className="emptyTitle">{search ? 'Tidak ada hasil yang cocok.' : 'Belum ada catatan utang.'}</p>
+            <p className="emptyDescription">
+              {search ? `Coba cari dengan kata kunci lain selain “${search}”.` : 'Saat ini semua terlihat aman. Data baru akan muncul di sini.'}
+            </p>
           </div>
         ) : (
           <div className="debtList">

@@ -1,7 +1,7 @@
 .ticker {
   display: flex;
   align-items: center;
-  background: var(--primary);
+  background: #2d4354;
   color: #fff;
   min-height: 40px;
   overflow: hidden;
@@ -12,7 +12,7 @@
 
 .label {
   flex-shrink: 0;
-  background: var(--primary-dark);
+  background: #1c2d3b;
   padding: 0 10px;
   min-height: 40px;
   display: flex;
@@ -79,4 +79,29 @@
   font-weight: 700;
   font-size: 12px;
   opacity: 1;
+}
+
+@media (max-width: 420px) {
+  .ticker {
+    min-height: 38px;
+  }
+
+  .label {
+    min-height: 38px;
+    padding-inline: 8px;
+    font-size: 9px;
+  }
+
+  .content {
+    padding: 7px 8px;
+  }
+
+  .item {
+    padding: 7px 9px;
+  }
+
+  .name,
+  .amount {
+    font-size: 11px;
+  }
 }
